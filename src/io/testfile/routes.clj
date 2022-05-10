@@ -75,6 +75,17 @@
   (-> (slurp "resources/text/languages.txt")
       (response/ok)))
 
+(defn pi-file
+  "Returns a text file containing N digits of pi."
+  [digits]
+  (let [digits (or (as-int digits) 2)
+        end (+ digits 2)]
+    (if (> digits 100000)
+      (response/unprocessable-entity "Error: requested too many digits (> 100,000).")
+      (-> (slurp "resources/text/pi.txr")
+          (subs 0 end)
+          (response/ok)))))
+
 (defn users-json-file
   "Generates a JSON file of random users based on the number of records requested.
    - `records` is an optional query parameter, if `nil` or not a number the default value is 3."
@@ -98,6 +109,7 @@
   (GET "/random"    [size] (random-file size))
   (GET "/utf-8"     [] (utf-8-test-file))
   (GET "/lang"      [] (language-test-file))
+  (GET "/pi"        [digits] (pi-file digits))
   (GET "/json"      [records] (users-json-file records))
   (GET "/bee"       [] (bee-movie-script))
   (route/not-found  (response/not-found)))
