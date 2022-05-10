@@ -10,10 +10,7 @@
 
 (defn text-file
   "Fetches a literary text file from the filesystem based on the size requested.
-   - `size` is an optional query parameter, if `nil` the default value is `sm`.
-   
-   Returns an OK response map with the requested file as the body, otherwise 
-   returns an error response if the query parameters are not valid."
+   - `size` is an optional query parameter, if `nil` the default value is `sm`."
   [size]
   (let [filepath "resources/text/"
         file (case (or size "sm")
@@ -56,8 +53,8 @@
 
 (defn random-file
   "Generates a file filled with random alphanumeric characters based on the size requested.
-   - `size` is an optional query parameter specifying a 'human-readable' filesize, like 50KB.
-     If not specified the size defaults to 1KB."
+   - `size` is an optional query parameter specifying a 'human-readable' filesize, 
+     like 50KB. If not specified the size defaults to 1KB."
   [size]
   (let [characters "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
         size-bytes (human-filesize-to-bytes (or size "1KB"))]
@@ -80,9 +77,7 @@
 
 (defn users-json-file
   "Generates a JSON file of random users based on the number of records requested.
-   - `records` is an optional query parameter, if `nil` or not a number the default value is 3.
-   
-   Returns an OK response map with the generated JSON file as the body."
+   - `records` is an optional query parameter, if `nil` or not a number the default value is 3."
   [records]
   (let [count (or (as-int records) 3)]
     (-> (repeatedly count faker/generate-user)
@@ -91,17 +86,18 @@
         (assoc :headers {"Content-Type" "application/json"}))))
 
 (defn bee-movie-script
+  "Returns the entire Bee Movie script."
   []
   (-> (slurp "resources/text/beemovie.txt")
       (response/ok)))
 
 (defroutes routes
-  (GET "/"               [] (response/ok "hello, world!"))
-  (ANY "/echo"           request (response/ok (with-out-str (pprint request))))
-  (GET "/text/literary"  [size] (text-file size))
-  (GET "/text/random"    [size] (random-file size))
-  (GET "/utf-8"          [] (utf-8-test-file))
-  (GET "/lang"           [] (language-test-file))
-  (GET "/json"           [records] (users-json-file records))
-  (GET "/bee"            [] (bee-movie-script))
-  (route/not-found       (response/not-found)))
+  (GET "/"          [] (response/ok "hello, world!"))
+  (ANY "/echo"      request (response/ok (with-out-str (pprint request))))
+  (GET "/literary"  [size] (text-file size))
+  (GET "/random"    [size] (random-file size))
+  (GET "/utf-8"     [] (utf-8-test-file))
+  (GET "/lang"      [] (language-test-file))
+  (GET "/json"      [records] (users-json-file records))
+  (GET "/bee"       [] (bee-movie-script))
+  (route/not-found  (response/not-found)))
