@@ -3,6 +3,7 @@
             [compojure.route :as route]
             [compojure.coercions :refer [as-int]]
             [clojure.pprint :refer [pprint]]
+            [clojure.string :refer [upper-case]]
             [cheshire.core :as cheshire]
             [io.testfile.faker :as faker]
             [io.testfile.response :as response]))
@@ -26,10 +27,44 @@
       (-> (slurp (str filepath file))
           (response/ok)))))
 
-(defn bee-movie-script
-  []
-  (-> (slurp "resources/text/beemovie.txt")
-      (response/ok)))
+(defn human-filesize-to-bytes
+  "Converts a human readable file size to its equivalent representation in bytes.
+   
+   Examples:
+   - 2MB = 2097152
+   - 42KB = 43008
+   - 10 = 10
+   - 1B = 1"
+  [human-string]
+  (if (number? (as-int human-string))
+    (as-int human-string) ; pass through if just an integer
+    (let [re-match (re-find #"([\d.,]+)\s*(\w+)" human-string)
+          magnitude (some-> re-match
+                            (get 1)
+                            (Double/parseDouble))
+          unit (some-> re-match
+                       (get 2)
+                       (upper-case))]
+      (if (nil? magnitude)
+        nil
+        (case unit
+          "GB" (Math/round (* magnitude 1073741824))
+          "MB" (Math/round (* magnitude 1048576))
+          "KB" (Math/round (* magnitude 1024))
+          "B" (Math/round magnitude)
+          nil)))))
+
+(defn random-file
+  "Generates a file filled with random alphanumeric characters based on the size requested.
+   - `size` is an optional query parameter specifying a 'human-readable' filesize, like 50KB.
+     If not specified the size defaults to 1KB."
+  [size]
+  (let [characters "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+        size-bytes (human-filesize-to-bytes (or size "1KB"))]
+    (cond
+      (nil? size-bytes)         (response/unprocessable-entity "Error: could not parse query parameter `size`.")
+      (> size-bytes 1073741824) (response/unprocessable-entity "Error: requested too many bytes (> 1GB).")
+      :else (repeatedly size-bytes #(rand-nth characters)))))
 
 (defn users-json-file
   "Generates a JSON file of random users based on the number of records requested.
@@ -43,10 +78,16 @@
         (response/ok)
         (assoc :headers {"Content-Type" "application/json"}))))
 
+(defn bee-movie-script
+  []
+  (-> (slurp "resources/text/beemovie.txt")
+      (response/ok)))
+
 (defroutes routes
-  (GET "/"     []        (response/ok "hello, world!"))
-  (ANY "/echo" request   (response/ok (with-out-str (pprint request))))
-  (GET "/text" [size]    (text-file size))
-  (GET "/bee"  []        (bee-movie-script))
-  (GET "/json" [records] (users-json-file records))
-  (route/not-found (response/not-found)))
+  (GET "/"               [] (response/ok "hello, world!"))
+  (ANY "/echo"           request (response/ok (with-out-str (pprint request))))
+  (GET "/text/literary"  [size] (text-file size))
+  (GET "/text/random"    [size] (random-file size))
+  (GET "/json"           [records] (users-json-file records))
+  (GET "/bee"            [] (bee-movie-script))
+  (route/not-found       (response/not-found)))
