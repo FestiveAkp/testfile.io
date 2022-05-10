@@ -66,6 +66,18 @@
       (> size-bytes 1073741824) (response/unprocessable-entity "Error: requested too many bytes (> 1GB).")
       :else (repeatedly size-bytes #(rand-nth characters)))))
 
+(defn utf-8-test-file
+  "Returns Markus Kuhn's UTF-8 encoded sample plain-text file."
+  []
+  (-> (slurp "resources/text/utf-8.txt")
+      (response/ok)))
+
+(defn language-test-file
+  "Returns the 'I Can Eat Glass' section of The Kermit Project's UTF-8 Sampler."
+  []
+  (-> (slurp "resources/text/languages.txt")
+      (response/ok)))
+
 (defn users-json-file
   "Generates a JSON file of random users based on the number of records requested.
    - `records` is an optional query parameter, if `nil` or not a number the default value is 3.
@@ -88,6 +100,8 @@
   (ANY "/echo"           request (response/ok (with-out-str (pprint request))))
   (GET "/text/literary"  [size] (text-file size))
   (GET "/text/random"    [size] (random-file size))
+  (GET "/utf-8"          [] (utf-8-test-file))
+  (GET "/lang"           [] (language-test-file))
   (GET "/json"           [records] (users-json-file records))
   (GET "/bee"            [] (bee-movie-script))
   (route/not-found       (response/not-found)))
