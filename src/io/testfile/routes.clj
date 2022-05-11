@@ -22,17 +22,17 @@
       (response/unprocessable-entity "Error: query parameter 'size' should be one of: [sm, md, lg, xl]")
       (response/text-resource (str "text/" file)))))
 
-
 (defn random-file
   "Generates a file filled with random alphanumeric characters based on the size requested.
    - `size` is an optional query parameter specifying a 'human-readable' filesize, 
      like 50KB. If not specified the size defaults to 1KB."
   [size]
   (let [characters "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+        GB 1073741824
         size-bytes (human-filesize-to-bytes (or size "1KB"))]
     (cond
-      (nil? size-bytes)         (response/unprocessable-entity "Error: could not parse query parameter `size`.")
-      (> size-bytes 1073741824) (response/unprocessable-entity "Error: requested too many bytes (> 1GB).")
+      (nil? size-bytes) (response/not-found) ; could not parse input -> cannot find file -> 404
+      (> size-bytes (* 100 GB)) (response/unprocessable-entity "Error: requested too many bytes (> 100GB).")
       :else (repeatedly size-bytes #(rand-nth characters)))))
 
 (defn utf-8-test-file
@@ -74,10 +74,10 @@
   (GET "/"          [] (response/ok "hello, world!"))
   (ANY "/echo"      request (response/ok (with-out-str (pprint request))))
   (GET "/literary"  [size] (text-file size))
-  (GET "/random"    [size] (random-file size))
   (GET "/utf-8"     [] (utf-8-test-file))
   (GET "/lang"      [] (language-test-file))
   (GET "/pi"        [digits] (pi-file digits))
   (GET "/json"      [records] (users-json-file records))
   (GET "/beemovie"  [] (bee-movie-script))
+  (GET "/:size"     [size] (random-file size))
   (route/not-found  (response/not-found)))
