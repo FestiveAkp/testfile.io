@@ -24,12 +24,11 @@
 
 (defn random-file
   "Generates a file filled with random alphanumeric characters based on the size requested.
-   - `size` is an optional query parameter specifying a 'human-readable' filesize, 
-     like 50KB. If not specified the size defaults to 1KB."
+   - `size` is a route parameter specifying a 'human-readable' filesize, like 50KB."
   [size]
   (let [characters "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
         GB 1073741824
-        size-bytes (human-filesize-to-bytes (or size "1KB"))]
+        size-bytes (human-filesize-to-bytes size)]
     (cond
       (nil? size-bytes) (response/not-found) ; could not parse input -> cannot find file -> 404
       (> size-bytes (* 100 GB)) (response/unprocessable-entity "Error: requested too many bytes (> 100GB).")
