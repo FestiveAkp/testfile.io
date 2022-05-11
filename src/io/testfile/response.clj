@@ -1,19 +1,24 @@
-(ns io.testfile.response)
+(ns io.testfile.response
+  (:require [ring.util.response :as ring]))
 
-(def headers
-  {"Content-Type" "text/plain"})
+(defn ok [body]
+  (-> (ring/response body)
+      (ring/content-type "text/plain")))
 
-(defn ok [body] 
-  {:status 200
-   :body body
-   :headers headers})
+(defn json [body]
+  (-> (ring/response body)
+      (ring/content-type "application/json")))
+
+(defn text-resource [path]
+  (-> (ring/resource-response path)
+      (ring/content-type "text/plain")))
 
 (defn not-found []
-  {:status 404
-   :body "404 Not Found"
-   :headers headers})
+  (-> (ring/response "404 Not Found")
+      (ring/status 404)
+      (ring/content-type "text/plain")))
 
 (defn unprocessable-entity [message]
-  {:status 422
-   :body message
-   :headers headers})
+  (-> (ring/response message)
+      (ring/status 422)
+      (ring/content-type "text/plain")))

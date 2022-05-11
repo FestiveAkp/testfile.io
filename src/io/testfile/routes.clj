@@ -12,8 +12,7 @@
   "Fetches a literary text file from the filesystem based on the size requested.
    - `size` is an optional query parameter, if `nil` the default value is `sm`."
   [size]
-  (let [filepath "resources/text/"
-        file (case (or size "sm")
+  (let [file (case (or size "sm")
                "sm" "ozymandias.txt"
                "md" "artofwar.txt"
                "lg" "odyssey.txt"
@@ -21,8 +20,7 @@
                nil)]
     (if-not file
       (response/unprocessable-entity "Error: query parameter 'size' should be one of: [sm, md, lg, xl]")
-      (-> (slurp (str filepath file))
-          (response/ok)))))
+      (response/text-resource (str "text/" file)))))
 
 (defn human-filesize-to-bytes
   "Converts a human readable file size to its equivalent representation in bytes.
@@ -66,14 +64,12 @@
 (defn utf-8-test-file
   "Returns Markus Kuhn's UTF-8 encoded sample plain-text file."
   []
-  (-> (slurp "resources/text/utf-8.txt")
-      (response/ok)))
+  (response/text-resource "text/utf-8.txt"))
 
 (defn language-test-file
   "Returns the 'I Can Eat Glass' section of The Kermit Project's UTF-8 Sampler."
   []
-  (-> (slurp "resources/text/languages.txt")
-      (response/ok)))
+  (response/text-resource "text/languages.txt"))
 
 (defn pi-file
   "Returns a text file containing N digits of pi."
@@ -82,7 +78,7 @@
         end (+ digits 2)]
     (if (> digits 100000)
       (response/unprocessable-entity "Error: requested too many digits (> 100,000).")
-      (-> (slurp "resources/text/pi.txr")
+      (-> (slurp "resources/text/pi.txt")
           (subs 0 end)
           (response/ok)))))
 
@@ -93,14 +89,12 @@
   (let [count (or (as-int records) 3)]
     (-> (repeatedly count faker/generate-user)
         (cheshire/generate-string)
-        (response/ok)
-        (assoc :headers {"Content-Type" "application/json"}))))
+        (response/json))))
 
 (defn bee-movie-script
   "Returns the entire Bee Movie script."
   []
-  (-> (slurp "resources/text/beemovie.txt")
-      (response/ok)))
+  (response/text-resource "text/beemovie.txt"))
 
 (defroutes routes
   (GET "/"          [] (response/ok "hello, world!"))
@@ -111,5 +105,5 @@
   (GET "/lang"      [] (language-test-file))
   (GET "/pi"        [digits] (pi-file digits))
   (GET "/json"      [records] (users-json-file records))
-  (GET "/bee"       [] (bee-movie-script))
+  (GET "/beemovie"  [] (bee-movie-script))
   (route/not-found  (response/not-found)))
