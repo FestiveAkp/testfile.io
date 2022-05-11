@@ -3,10 +3,10 @@
             [compojure.route :as route]
             [compojure.coercions :refer [as-int]]
             [clojure.pprint :refer [pprint]]
-            [clojure.string :refer [upper-case]]
             [cheshire.core :as cheshire]
             [io.testfile.faker :as faker]
-            [io.testfile.response :as response]))
+            [io.testfile.response :as response]
+            [io.testfile.util :refer [human-filesize-to-bytes]]))
 
 (defn text-file
   "Fetches a literary text file from the filesystem based on the size requested.
@@ -22,32 +22,6 @@
       (response/unprocessable-entity "Error: query parameter 'size' should be one of: [sm, md, lg, xl]")
       (response/text-resource (str "text/" file)))))
 
-(defn human-filesize-to-bytes
-  "Converts a human readable file size to its equivalent representation in bytes.
-   
-   Examples:
-   - 2MB = 2097152
-   - 42KB = 43008
-   - 10 = 10
-   - 1B = 1"
-  [human-string]
-  (if (number? (as-int human-string))
-    (as-int human-string) ; pass through if just an integer
-    (let [re-match (re-find #"([\d.,]+)\s*(\w+)" human-string)
-          magnitude (some-> re-match
-                            (get 1)
-                            (Double/parseDouble))
-          unit (some-> re-match
-                       (get 2)
-                       (upper-case))]
-      (if (nil? magnitude)
-        nil
-        (case unit
-          "GB" (Math/round (* magnitude 1073741824))
-          "MB" (Math/round (* magnitude 1048576))
-          "KB" (Math/round (* magnitude 1024))
-          "B" (Math/round magnitude)
-          nil)))))
 
 (defn random-file
   "Generates a file filled with random alphanumeric characters based on the size requested.
