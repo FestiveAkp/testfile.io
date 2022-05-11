@@ -10,16 +10,16 @@
 
 (defn text-file
   "Fetches a literary text file from the filesystem based on the size requested.
-   - `size` is an optional query parameter, if `nil` the default value is `sm`."
+   - `size` is a route parameter, should be one of [sm, md, lg, xl]."
   [size]
-  (let [file (case (or size "sm")
+  (let [file (case size
                "sm" "ozymandias.txt"
                "md" "artofwar.txt"
                "lg" "odyssey.txt"
                "xl" "websters.txt"
                nil)]
     (if-not file
-      (response/unprocessable-entity "Error: query parameter 'size' should be one of: [sm, md, lg, xl]")
+      (response/not-found)
       (response/text-resource (str "text/" file)))))
 
 (defn random-file
@@ -71,13 +71,14 @@
   (response/text-resource "text/beemovie.txt"))
 
 (defroutes routes
-  (GET "/"           [] (response/ok "hello, world!"))
-  (ANY "/echo"       request (response/ok (with-out-str (pprint request))))
-  (GET "/text"       [size] (text-file size))
-  (GET "/utf-8"      [] (utf-8-test-file))
-  (GET "/languages"  [] (language-test-file))
-  (GET "/pi"         [digits] (pi-file digits))
-  (GET "/json"       [records] (users-json-file records))
-  (GET "/beemovie"   [] (bee-movie-script))
-  (GET "/:size"      [size] (random-file size))
-  (route/not-found   (response/not-found)))
+  (GET "/"            [] (response/ok "hello, world!"))
+  (ANY "/echo"        request (response/ok (with-out-str (pprint request))))
+  (GET "/text"        [] (text-file "sm"))
+  (GET "/text/:size"  [size] (text-file size))
+  (GET "/utf-8"       [] (utf-8-test-file))
+  (GET "/languages"   [] (language-test-file))
+  (GET "/pi"          [digits] (pi-file digits))
+  (GET "/json"        [records] (users-json-file records))
+  (GET "/beemovie"    [] (bee-movie-script))
+  (GET "/:size"       [size] (random-file size))
+  (route/not-found    (response/not-found)))
