@@ -12,6 +12,6 @@
                  [cheshire "5.10.2"]
                  [com.github.javafaker/javafaker "1.0.2"]]
   :main ^:skip-aot io.testfile.core
-  :target-path "target/%s"
+  :uberjar-name "io.testfile-standalone.jar"
   :profiles {:uberjar {:aot :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}})
