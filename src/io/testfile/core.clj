@@ -8,13 +8,15 @@
 
 (defonce server (atom nil))
 
-(defn start-server []
+(defn start-server [port]
   (reset! server
-          (ring/run-jetty (fn [req] (app req)) {:port 8080 :join? false})))
+          (ring/run-jetty (fn [req] (app req)) {:port port :join? false})))
 
 (defn stop-server []
   (when-some [s @server]
     (.stop s)
     (reset! server nil)))
 
-(defn -main [] (start-server))
+(defn -main []
+  (let [port (Integer. (or (System/getenv "PORT") "8080"))]
+    (start-server port)))
