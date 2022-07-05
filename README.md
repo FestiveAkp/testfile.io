@@ -20,8 +20,7 @@ Want a bigger file? Choose one between `sm`, `md`, `lg`, and `xl`:
 
     Sun Tzu said:
 
-    The art of war is of vital importance to the state. It is a matter of life and death, a road either to safety or to ruin. Hence under no circumstances can it be neglected.
-    ...
+    The art of war is of vital importance to the state. It is a matter of life and death...
 
 Need a file with an exact size? Request a number with units to get a text file with random characters:
 
@@ -77,6 +76,7 @@ There are various other endpoints which can be explored below.
 | `/utf-8` | Gets a text file containing several UTF-8 symbols and glyphs |  | Markus Kuhn's UTF-8 encoded sample plain-text file | ~13 KB | [Link](http://testfile.io/utf-8) |
 | `/json?records={records}` | Generates a sample JSON document containing a list of N user objects | `records`, the # of user objects to generate, default: 3 |  |  | [Link](http://testfile.io/json) |
 | `/pi?digits={digits}` | Gets N digits of pi up to 100,000 | `digits`, the # of digits after the decimal place to retrieve, default: 2 |  |  | [Link](http://testfile.io/pi?digits=25) |
+| `/favicon` | Gets a 16x16 favicon image in ICO format |  |  | ~200 B | [Link](http://testfile.io/favicon) |
 | `/beemovie` | Gets the entire Bee Movie script |  | Bee Movie | ~88 KB | [Link](http://testfile.io/beemovie) |
 
 ## Installation

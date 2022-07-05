@@ -22,3 +22,7 @@
   (-> (ring/response message)
       (ring/status 422)
       (ring/content-type "text/plain")))
+
+(defn favicon [path]
+  (-> (ring/resource-response path)
+      (ring/content-type "image/x-icon")))

@@ -69,6 +69,11 @@
   []
   (response/text-resource "text/beemovie.txt"))
 
+(defn favicon
+  "Returns a typical 16x16 favicon used on the web."
+  []
+  (response/favicon "images/favicon.ico"))
+
 (defroutes routes
   (GET "/"            [] (response/ok "hello, world!"))
   (ANY "/echo"        request (response/ok (with-out-str (pprint request))))
@@ -79,5 +84,6 @@
   (GET "/pi"          [digits] (pi-file digits))
   (GET "/json"        [records] (users-json-file records))
   (GET "/beemovie"    [] (bee-movie-script))
+  (GET "/favicon"     [] (favicon))
   (GET "/:size"       [size] (random-file size))
   (route/not-found    (response/not-found)))
