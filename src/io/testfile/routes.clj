@@ -8,6 +8,11 @@
             [io.testfile.response :as response]
             [io.testfile.util :refer [human-filesize-to-bytes]]))
 
+(defn welcome-file
+  "Returns the welcome text for the application."
+  []
+  (response/text-resource "text/welcome.txt"))
+
 (defn text-file
   "Fetches a literary text file from the filesystem based on the size requested.
    - `size` is a route parameter, should be one of [sm, md, lg, xl]."
@@ -75,7 +80,7 @@
   (response/favicon "images/favicon.ico"))
 
 (defroutes routes
-  (GET "/"            [] (response/ok "hello, world!"))
+  (GET "/"            [] (welcome-file))
   (ANY "/echo"        request (response/ok (with-out-str (pprint request))))
   (GET "/text"        [] (text-file "sm"))
   (GET "/text/:size"  [size] (text-file size))
