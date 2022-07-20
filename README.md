@@ -77,6 +77,7 @@ There are various other endpoints which can be explored below.
 | `/json?records={records}` | Generates a sample JSON document containing a list of N user objects | `records`, the # of user objects to generate, default: 3 |  |  | [Link](http://testfile.io/json) |
 | `/pi?digits={digits}` | Gets N digits of pi up to 100,000 | `digits`, the # of digits after the decimal place to retrieve, default: 2 |  |  | [Link](http://testfile.io/pi?digits=25) |
 | `/favicon` | Gets a 16x16 favicon image in ICO format |  |  | ~200 B | [Link](http://testfile.io/favicon) |
+| `/gif` | Gets a 320x240 animated image in GIF format |  |  | ~1 MB | [Link](http://testfile.io/gif) |
 | `/beemovie` | Gets the entire Bee Movie script |  | Bee Movie | ~88 KB | [Link](http://testfile.io/beemovie) |
 
 ## Installation
