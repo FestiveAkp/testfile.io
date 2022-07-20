@@ -26,3 +26,7 @@
 (defn favicon [path]
   (-> (ring/resource-response path)
       (ring/content-type "image/x-icon")))
+
+(defn gif [path]
+  (-> (ring/resource-response path)
+      (ring/content-type "image/gif")))

@@ -8,11 +8,6 @@
             [io.testfile.response :as response]
             [io.testfile.util :refer [human-filesize-to-bytes]]))
 
-(defn welcome-file
-  "Returns the welcome text for the application."
-  []
-  (response/text-resource "text/welcome.txt"))
-
 (defn text-file
   "Fetches a literary text file from the filesystem based on the size requested.
    - `size` is a route parameter, should be one of [sm, md, lg, xl]."
@@ -39,16 +34,6 @@
       (> size-bytes (* 100 GB)) (response/unprocessable-entity "Error: requested too many bytes (> 100GB).")
       :else (repeatedly size-bytes #(rand-nth characters)))))
 
-(defn utf-8-test-file
-  "Returns Markus Kuhn's UTF-8 encoded sample plain-text file."
-  []
-  (response/text-resource "text/utf-8.txt"))
-
-(defn language-test-file
-  "Returns the 'I Can Eat Glass' section of The Kermit Project's UTF-8 Sampler."
-  []
-  (response/text-resource "text/languages.txt"))
-
 (defn pi-file
   "Returns a text file containing N digits of pi."
   [digits]
@@ -69,26 +54,17 @@
         (cheshire/generate-string)
         (response/json))))
 
-(defn bee-movie-script
-  "Returns the entire Bee Movie script."
-  []
-  (response/text-resource "text/beemovie.txt"))
-
-(defn favicon
-  "Returns a typical 16x16 favicon used on the web."
-  []
-  (response/favicon "images/favicon.ico"))
-
 (defroutes routes
-  (GET "/"            [] (welcome-file))
+  (GET "/"            [] (response/text-resource "text/welcome.txt"))
   (ANY "/echo"        request (response/ok (with-out-str (pprint request))))
   (GET "/text"        [] (text-file "sm"))
   (GET "/text/:size"  [size] (text-file size))
-  (GET "/utf-8"       [] (utf-8-test-file))
-  (GET "/languages"   [] (language-test-file))
   (GET "/pi"          [digits] (pi-file digits))
   (GET "/json"        [records] (users-json-file records))
-  (GET "/beemovie"    [] (bee-movie-script))
-  (GET "/favicon"     [] (favicon))
+  (GET "/languages"   [] (response/text-resource "text/languages.txt"))
+  (GET "/utf-8"       [] (response/text-resource "text/utf-8.txt"))
+  (GET "/beemovie"    [] (response/text-resource "text/beemovie.txt"))
+  (GET "/favicon"     [] (response/favicon "images/favicon.ico"))
+  (GET "/gif"         [] (response/gif "images/brentrambo.gif"))
   (GET "/:size"       [size] (random-file size))
   (route/not-found    (response/not-found)))
