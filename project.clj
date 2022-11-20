@@ -10,6 +10,7 @@
                  [ring/ring-core "1.9.5"]
                  [ring/ring-defaults "0.3.3"]
                  [ring/ring-jetty-adapter "1.9.5"]
+                 [ring-ratelimit "0.2.2"]
                  [compojure "1.6.2"]
                  [cheshire "5.10.2"]
                  [com.github.javafaker/javafaker "1.0.2"]]

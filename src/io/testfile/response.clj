@@ -30,3 +30,8 @@
 (defn gif [path]
   (-> (ring/resource-response path)
       (ring/content-type "image/gif")))
+
+(defn too-many-requests [_]
+  (-> (ring/response "429 Too Many Requests")
+      (ring/status 429)
+      (ring/content-type "text/plain")))
