@@ -6,7 +6,7 @@ A simple API for retrieving test files of various sizes and filetypes for testin
 
 Just need a simple text file? Make a `GET` request to `/text`:
 
-    $ curl testfile.io/text > test.txt
+    $ curl -L testfile-io.fly.dev/text > test.txt
 
     I met a traveller from an antique land
     Who said: "Two vast and trunkless legs of stone
@@ -14,7 +14,7 @@ Just need a simple text file? Make a `GET` request to `/text`:
 
 Want a bigger file? Choose one between `sm`, `md`, `lg`, and `xl`:
 
-    $ curl testfile.io/text/md
+    $ curl -L testfile-io.fly.dev/text/md
 
     I: LAYING PLANS
 
@@ -24,25 +24,25 @@ Want a bigger file? Choose one between `sm`, `md`, `lg`, and `xl`:
 
 Need a file with an exact size? Request a number with units to get a text file with random characters:
 
-    $ curl testfile.io/2KB
+    $ curl -L testfile-io.fly.dev/2KB
 
     8UNdyRyEloZUocHzpeV2waiHlfM6FDsC3NsB5sOMsQSc5ibHfV129iLYpFKyT4qB8DgseoD2YgdLExF
     ...
 
 Want a file with non-Latin characters? Retrieve the languages test file:
 
-    $ curl testfile.io/languages
+    $ curl -L testfile-io.fly.dev/languages
 
     Sanskrit: काचं शक्नोम्यत्तुम् । नोपहिनस्ति माम् ॥
     Sanskrit (standard transcription): kācaṃ śaknomyattum; nopahinasti mām.
     Inuktitut: ᐊᓕᒍᖅ ᓂᕆᔭᕌᖓᒃᑯ ᓱᕋᙱᑦᑐᓐᓇᖅᑐᖓ
     ...
 
-You can also test for various UTF-8 symbols using the UTF-8 test file at [testfile.io/utf-8](http://testfile.io/utf-8).
+You can also test for various UTF-8 symbols using the UTF-8 test file at [testfile-io.fly.dev/utf-8](http://testfile-io.fly.dev/utf-8).
 
 Want a JSON file? Generate a fake list of users:
 
-    $ curl testfile.io/json
+    $ curl -L testfile-io.fly.dev/json
 
     [
         {
@@ -66,19 +66,19 @@ There are various other endpoints which can be explored below.
 
 | Route | Description | Parameters | Source | &nbsp;&nbsp;File&nbsp;Size&nbsp;&nbsp; | Link |
 | --- | --- | --- | --- | --- | --- |
-| `/text/sm` | Gets a line-oriented, human readable text file of small size |  | Ozymandias | ~650 B | [Link](http://testfile.io/text/sm) |
-| `/text/md` | Gets a line-oriented, human readable text file of medium size |  | Chapter 1 of The Art of War | ~12 KB | [Link](http://testfile.io/text/md) |
-| `/text/lg` | Gets a line-oriented, human readable text file of large size |  | The Odyssey | ~600 KB | [Link](http://testfile.io/text/lg) |
-| `/text/xl` | Gets a line-oriented, human readable text file of extra large size |  | Webster's Unabridged Dictionary | ~27 MB | [Link](http://testfile.io/text/xl) |
-| `/text` | Alias for `/text/sm` |  |  |  | [Link](http://testfile.io/text) |
-| `/{size}` | Generates a text file of an exact size | `size`, a number with units, like 10KB or 1.2MB |  |  | [Link](http://testfile.io/2.1KB) |
-| `/languages` | Gets a text file containing several different languages, including non-Latin alphabets |  | Excerpt from The Kermit Project's [UTF-8 Sampler](https://kermitproject.org/utf8.html) | ~13 KB | [Link](http://testfile.io/languages) |
-| `/utf-8` | Gets a text file containing several UTF-8 symbols and glyphs |  | Markus Kuhn's UTF-8 encoded sample plain-text file | ~13 KB | [Link](http://testfile.io/utf-8) |
-| `/json?records={records}` | Generates a sample JSON document containing a list of N user objects | `records`, the # of user objects to generate, default: 3 |  |  | [Link](http://testfile.io/json) |
-| `/pi?digits={digits}` | Gets N digits of pi up to 100,000 | `digits`, the # of digits after the decimal place to retrieve, default: 2 |  |  | [Link](http://testfile.io/pi?digits=25) |
-| `/favicon` | Gets a 16x16 favicon image in ICO format |  |  | ~200 B | [Link](http://testfile.io/favicon) |
-| `/gif` | Gets a 320x240 animated image in GIF format |  |  | ~1 MB | [Link](http://testfile.io/gif) |
-| `/beemovie` | Gets the entire Bee Movie script |  | Bee Movie | ~88 KB | [Link](http://testfile.io/beemovie) |
+| `/text/sm` | Gets a line-oriented, human readable text file of small size |  | Ozymandias | ~650 B | [Link](http://testfile-io.fly.dev/text/sm) |
+| `/text/md` | Gets a line-oriented, human readable text file of medium size |  | Chapter 1 of The Art of War | ~12 KB | [Link](http://testfile-io.fly.dev/text/md) |
+| `/text/lg` | Gets a line-oriented, human readable text file of large size |  | The Odyssey | ~600 KB | [Link](http://testfile-io.fly.dev/text/lg) |
+| `/text/xl` | Gets a line-oriented, human readable text file of extra large size |  | Webster's Unabridged Dictionary | ~27 MB | [Link](http://testfile-io.fly.dev/text/xl) |
+| `/text` | Alias for `/text/sm` |  |  |  | [Link](http://testfile-io.fly.dev/text) |
+| `/{size}` | Generates a text file of an exact size | `size`, a number with units, like 10KB or 1.2MB |  |  | [Link](http://testfile-io.fly.dev/2.1KB) |
+| `/languages` | Gets a text file containing several different languages, including non-Latin alphabets |  | Excerpt from The Kermit Project's [UTF-8 Sampler](https://kermitproject.org/utf8.html) | ~13 KB | [Link](http://testfile-io.fly.dev/languages) |
+| `/utf-8` | Gets a text file containing several UTF-8 symbols and glyphs |  | Markus Kuhn's UTF-8 encoded sample plain-text file | ~13 KB | [Link](http://testfile-io.fly.dev/utf-8) |
+| `/json?records={records}` | Generates a sample JSON document containing a list of N user objects | `records`, the # of user objects to generate, default: 3 |  |  | [Link](http://testfile-io.fly.dev/json) |
+| `/pi?digits={digits}` | Gets N digits of pi up to 100,000 | `digits`, the # of digits after the decimal place to retrieve, default: 2 |  |  | [Link](http://testfile-io.fly.dev/pi?digits=25) |
+| `/favicon` | Gets a 16x16 favicon image in ICO format |  |  | ~200 B | [Link](http://testfile-io.fly.dev/favicon) |
+| `/gif` | Gets a 320x240 animated image in GIF format |  |  | ~1 MB | [Link](http://testfile-io.fly.dev/gif) |
+| `/beemovie` | Gets the entire Bee Movie script |  | Bee Movie | ~88 KB | [Link](http://testfile-io.fly.dev/beemovie) |
 
 ## Installation
 

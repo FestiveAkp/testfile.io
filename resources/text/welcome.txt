@@ -5,6 +5,6 @@
   \__\___||___/\__|_| |_|_|\___(_)_|\___/ 
 
 
-Welcome to testfile.io - the simple API for generating dummy files for testing programs and networks.
+Welcome to testfile.io - the simple API for generating files for testing programs and networks.
 
 The full usage instructions can be found on GitHub: https://github.com/FestiveAkp/testfile.io
