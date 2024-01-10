@@ -76,7 +76,7 @@ There are various other endpoints which can be explored below.
 | `/utf-8` | Gets a text file containing several UTF-8 symbols and glyphs |  | Markus Kuhn's UTF-8 encoded sample plain-text file | ~13 KB | [Link](http://testfile-io.fly.dev/utf-8) |
 | `/json?records={records}` | Generates a sample JSON document containing a list of N user objects | `records`, the # of user objects to generate, default: 3 |  |  | [Link](http://testfile-io.fly.dev/json) |
 | `/pi?digits={digits}` | Gets N digits of pi up to 100,000 | `digits`, the # of digits after the decimal place to retrieve, default: 2 |  |  | [Link](http://testfile-io.fly.dev/pi?digits=25) |
-| `/favicon` | Gets a 16x16 favicon image in ICO format |  |  | ~200 B | [Link](http://testfile-io.fly.dev/favicon) |
+| `/favicon.ico` | Gets a 16x16 favicon image in ICO format |  |  | ~200 B | [Link](http://testfile-io.fly.dev/favicon.ico) |
 | `/gif` | Gets a 320x240 animated image in GIF format |  |  | ~1 MB | [Link](http://testfile-io.fly.dev/gif) |
 | `/beemovie` | Gets the entire Bee Movie script |  | Bee Movie | ~88 KB | [Link](http://testfile-io.fly.dev/beemovie) |
 

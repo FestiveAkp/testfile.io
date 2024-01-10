@@ -64,7 +64,7 @@
   (GET "/languages"   [] (response/text-resource "text/languages.txt"))
   (GET "/utf-8"       [] (response/text-resource "text/utf-8.txt"))
   (GET "/beemovie"    [] (response/text-resource "text/beemovie.txt"))
-  (GET "/favicon"     [] (response/favicon "images/favicon.ico"))
+  (GET "/favicon.ico" [] (response/favicon "images/favicon.ico"))
   (GET "/gif"         [] (response/gif "images/brentrambo.gif"))
   (GET "/:size"       [size] (random-file size))
   (route/not-found    (response/not-found)))
